@@ -11,16 +11,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Remove bad files from history
-        run: |
-          # This force-removes the screenshots folder from the sync process
-          rm -rf screenshots/
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+          # We create a new temporary branch without the bad history
+          git checkout --orphan latest-branch
+          git add -A
+          git commit -m "Clean sync without screenshots"
           git remote add hf https://yarin1:$HF_TOKEN@huggingface.co/spaces/yarin1/tmdb-embed-api
-          # We use a 'force' push to overwrite the bad history on Hugging Face
-          git push -f hf main
+          # Force push this clean branch to HF's main
+          git push -f hf latest-branch:main
