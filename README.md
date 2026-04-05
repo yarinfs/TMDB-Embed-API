@@ -1,3 +1,12 @@
+---
+title: Tmdb Embed Api
+emoji: 🎬
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
 # 🍿 TMDB Embed API
 
 > Modern, configurable streaming metadata + source aggregation API with a secure admin panel and multi-key TMDB rotation.
@@ -9,28 +18,6 @@
   <img src="https://img.shields.io/badge/Version-1.0.9-informational?style=flat" />
   <img src="https://img.shields.io/docker/pulls/inside4ndroid/tmdb-embed-api?label=Docker%20Pulls&style=flat" />
 </p>
-
----
-
-## 📸 Screenshots
-<p align="center">
-  <img src="screenshots/Screenshot 2025-09-16 174931.png" width="46%" />
-  <img src="screenshots/Screenshot 2025-09-16 175002.png" width="46%" />
-</p>
-<p align="center">
-  <img src="screenshots/Screenshot 2025-09-16 175008.png" width="46%" />
-  <img src="screenshots/Screenshot 2025-09-16 175013.png" width="46%" />
-</p>
-<p align="center">
-  <img src="screenshots/Screenshot 2025-09-16 175020.png" width="46%" />
-  <img src="screenshots/Screenshot 2025-09-16 175026.png" width="46%" />
-</p>
-<p align="center">
-  <img src="screenshots/Screenshot 2025-09-16 175033.png" width="46%" />
-  <img src="screenshots/Screenshot 2025-09-16 175040.png" width="46%" />
-</p>
-
----
 
 ## ✨ Features
 - **Multi‑TMDB Key Rotation** – Supply multiple API keys; one is chosen randomly per request.
