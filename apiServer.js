@@ -412,13 +412,3 @@ const server = app.listen(PORT, HOST, () => {
 });
 
 server.on('error', (err)=>{ console.error('[diagnostic] server error', err); });
-
-const express = require('express');
-const cors = require('cors'); // 1. Import CORS
-
-const app = express();
-
-app.use(cors()); // 2. Enable CORS for all routes
-
-// ... your routes go down here
-app.get('/api/streams/:type/:tmdbId', ...)
