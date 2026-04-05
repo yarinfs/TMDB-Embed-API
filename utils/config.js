@@ -2,10 +2,13 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-// Relocated user-config.json into utils directory; maintain backward-compatible fallback
-const NEW_OVERRIDE_PATH = path.join(process.cwd(), 'utils', 'user-config.json');
-const OVERRIDE_PATH = '/app/persistence/user-config.json';
-const OVERRIDE_PATH = (fs.existsSync(NEW_OVERRIDE_PATH) || !fs.existsSync(LEGACY_OVERRIDE_PATH)) ? NEW_OVERRIDE_PATH : LEGACY_OVERRIDE_PATH;
+// 🛠️ THE FIX: Only declare OVERRIDE_PATH once. 
+// It checks if the persistence bucket exists; otherwise, it falls back to the local utils folder.
+const PERSISTENCE_PATH = '/app/persistence/user-config.json';
+const LOCAL_PATH = path.join(process.cwd(), 'utils', 'user-config.json');
+
+const OVERRIDE_PATH = fs.existsSync('/app/persistence') ? PERSISTENCE_PATH : LOCAL_PATH;
+
 const CONFIG_SCHEMA_VERSION = 1; 
 
 function parseJsonMaybe(val) {
@@ -45,6 +48,11 @@ function readOverrideFile() {
 
 function writeOverrideFile(obj) {
   try {
+    // Ensure the persistence directory exists before writing
+    const dir = path.dirname(OVERRIDE_PATH);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     fs.writeFileSync(OVERRIDE_PATH, JSON.stringify(obj, null, 2));
     return true;
   } catch (e) {
@@ -106,8 +114,6 @@ function normalizeConfig(base) {
   
   if (cfg.disableCache === undefined) cfg.disableCache = false;
   if (cfg.enablePStreamApi === undefined) cfg.enablePStreamApi = true;
-  
-  // FIXED: Changed default to TRUE for Render persistence
   if (cfg.enableProxy === undefined) cfg.enableProxy = true; 
   
   if (cfg.disableUrlValidation === undefined) cfg.disableUrlValidation = false;
@@ -157,7 +163,6 @@ function loadConfig() {
     showboxCacheDir: process.env.SHOWBOX_CACHE_DIR || null,
     disableUrlValidation: process.env.DISABLE_URL_VALIDATION,
     disable4khdhubUrlValidation: process.env.DISABLE_4KHDHUB_URL_VALIDATION,
-    // FIXED: Added missing environment variable read
     enableProxy: process.env.ENABLE_PROXY 
   };
   
